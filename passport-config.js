@@ -9,9 +9,10 @@ function initializePassport(passport) {
         if (!UserEmails.includes(email)) {
             return done(null, false, { message : "User doesn't exist, please register!" })
         }
-        const user = Users[UserEmails.indexOf(email)]
+        const getUser = (email) => Users[UserEmails.indexOf(email)]
         //User exists
         //Password check
+        const user = getUser(email)
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err) throw err;
 
@@ -20,6 +21,15 @@ function initializePassport(passport) {
             } else {
                 return done(null, false, { message : "Passwords don't match!" })
             }
+        })
+
+        passport.serializeUser((user, done) => {
+            done(null, user.email)
+        })
+
+        passport.deserializeUser((email, done) => {
+            const user = getUser(email)
+            done(null, user)
         })
 
     }

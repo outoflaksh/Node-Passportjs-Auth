@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
+const passport = require('passport')
 
 const Users = []
 const UserEmails = []
@@ -12,6 +13,13 @@ router.get('/login', (req, res) => {
 router.get('/register', (req, res) => {
     res.render('register.ejs')
 })
+
+//LOGOUT
+router.get('/logout', (req, res) => {
+    req.logout()
+    res.redirect('/')
+})
+
 
 router.post('/register', async (req, res) => {
     //extracting values 
@@ -56,8 +64,11 @@ router.post('/register', async (req, res) => {
     }
 })
 
-router.post('/login', (req, res) => {
-    console.log(req.body)
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', {
+        successRedirect : '/dashboard',
+        failureRedirect : '/users/login'
+    })(req, res, next)
 })
 
 module.exports = { router : router, Users : Users, UserEmails : UserEmails }
