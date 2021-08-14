@@ -1,2 +1,2 @@
-# User Authentication using Passport.js [WIP]
+# User Authentication using Passport.js
 User login and authentication using node with passport js 
