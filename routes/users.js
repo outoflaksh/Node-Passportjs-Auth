@@ -3,6 +3,7 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 
 const Users = []
+const UserEmails = []
 
 router.get('/login', (req, res) => {
     res.render('login.ejs')
@@ -36,22 +37,21 @@ router.post('/register', async (req, res) => {
 
     } else {
         //Passed validaiton check
-        const newUser = {
-            name : req.body.name,
-            email : req.body.email,
-        }
-        console.log(Users)
-        console.log(newUser)
-        if(Users.includes(newUser)) {
+
+        if(UserEmails.includes(email)) {
             //User doesn't exist already 
             errors.push({ message : "Account already exists! Please login" })
             res.render('register', { errors })
         } else {
             const hashedPassword = await bcrypt.hash(password, 10)
-            newUser["hashedPassword"] = hashedPassword
+            const newUser = {
+                name : req.body.name,
+                email : req.body.email,
+                password : hashedPassword
+            }
             Users.push(newUser)
+            UserEmails.push(email)
             res.render('login')
-            console.log(Users)
         }
     }
 })
@@ -60,4 +60,4 @@ router.post('/login', (req, res) => {
     console.log(req.body)
 })
 
-module.exports = router;
+module.exports = { router : router, Users : Users, UserEmails : UserEmails }
