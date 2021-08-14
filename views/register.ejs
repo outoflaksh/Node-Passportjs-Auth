@@ -39,6 +39,7 @@
           </div>
           <div class="card-body p-4 p-sm-5">
             <h5 class="card-title text-center mb-5 fw-light fs-5">Register</h5>
+            <%- include('partials/messages.ejs') %>
             <form action='/users/register' method='POST'>
 
               <div class="form-floating mb-3">
@@ -56,6 +57,11 @@
               <div class="form-floating mb-3">
                 <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required>
                 <label for="password">Password</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password2" required>
+                <label for="password2">Confirm Password</label>
               </div>
 
               <div class="d-grid mb-2">
